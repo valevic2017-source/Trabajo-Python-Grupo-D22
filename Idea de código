@@ -1,0 +1,226 @@
+# =================================================================
+# 📘 TRABAJO PRÁCTICO: GESTIÓN DE VETERINARIA
+# =================================================================
+
+# -----------------------------------------------------------------
+# 🛠️ SECCIÓN DE FUNCIONES (Las "maquinitas" independientes)
+# -----------------------------------------------------------------
+def calcular_costo_atencion(tipo_servicio, urgencia):
+    """
+    Función que calcula el precio en base al servicio y la gravedad.
+    Retorna el costo final.
+    """
+    costo_base = 0
+    
+    if tipo_servicio == "1":    # Consulta Médica
+        costo_base = 5000
+    elif tipo_servicio == "2":  # Baño y Corte de Uñas (Estética)
+        costo_base = 7000
+        
+    # Aplicamos un recargo del 20% si es una urgencia alta
+    if urgencia == "Alta":
+        recargo = costo_base * 0.20
+    else:
+        recargo = 0
+        
+    return costo_base + recargo
+
+
+# -----------------------------------------------------------------
+# 🚀 PROCESO PRINCIPAL
+# -----------------------------------------------------------------
+
+# --- 🌟 INICIALIZACIÓN DE TOTALES (Tu procedimiento Ini) ---
+total_recaudado = 0
+total_atenciones = 0
+
+# Contadores para las estadísticas de las familias
+cant_caninos = 0
+cant_felinos = 0
+cant_aves = 0
+cant_reptiles = 0
+
+# Variables para el control del Máximo (El "Trono del Rey")
+max_gasto = 0
+max_nombre_mascota = ""
+max_familia_mascota = ""
+
+print("========================================")
+print("   SISTEMA DE GESTIÓN VETERINARIA V3.0  ")
+print("========================================")
+
+opcion = ""
+
+# Ciclo principal del menú (El Mientras con condición de salida)
+while opcion != "3":
+    print("\n--- MENÚ PRINCIPAL ---")
+    print("1. Registrar Atención de Mascota")
+    print("2. Mostrar Reporte Estadístico del Día")
+    print("3. Cerrar Sistema y Salir")
+    opcion = input("Seleccione una opción (1-3): ")
+    
+    if opcion == "1":
+        print("\n--- REGISTRO DE NUEVA ATENCIÓN ---")
+        nombre_mascota = input("Nombre de la mascota: ")
+        
+        # 1. Selección inicial de Familia de Animales
+        print("\nCategorías de familia:")
+        print("1. Canino")
+        print("2. Felino")
+        print("3. Ave")
+        print("4. Reptil")
+        categoria = input("Seleccione la categoría (1-4): ")
+        
+        if categoria == "1": nombre_familia = "Canino"
+        elif categoria == "2": nombre_familia = "Felino"
+        elif categoria == "3": nombre_familia = "Ave"
+        elif categoria == "4": nombre_familia = "Reptil"
+        else: nombre_familia = "Desconocida"
+            
+        especie_raza = input("Especie o Raza específica (ej: Loro, Caniche, Iguana): ")
+        
+        # 2. Selección inicial del Servicio
+        print("\nServicios disponibles:")
+        print("1. Consulta Médica")
+        print("2. Baño y Corte de Uñas (Estética)")
+        servicio = input("Seleccione el servicio (1-2): ")
+        
+        # 🌟 FILTRO: Estética EXCLUSIVA para Perros (1) y Gatos (2)
+        if servicio == "2" and categoria not in ["1", "2"]:
+            print(f"\n⚠️ ATENCIÓN: El servicio de estética SOLO se realiza a Caninos o Felinos.")
+            print(f"Se cambia automáticamente el servicio de este {nombre_familia} a '1' (Consulta Médica).")
+            servicio = "1"
+            
+        # 3. Selección inicial del nivel de urgencia
+        print("\nNivel de Urgencia (Alta / Media / Baja): ")
+        nivel_urgencia = input("Ingrese la urgencia: ").capitalize()
+        
+        # Calculamos el monto de forma temporal (todavía no se suma a la caja)
+        monto_actual = calcular_costo_atencion(servicio, nivel_urgencia)
+        
+        # =============================================================
+        # 🌟 EL SUBMENÚ DE REVISIÓN Y CORRECCIÓN QUIRÚRGICA
+        # =============================================================
+        datos_correctos = False
+        
+        # Bucle anidado: se repite MIENTRAS el usuario no confirme que está todo OK
+        while datos_correctos == False:
+            print("\n----------------------------------------")
+            print("   🔍 REVISE LOS DATOS DE LA MASCOTA")
+            print("----------------------------------------")
+            print(f"1. Nombre:    {nombre_mascota}")
+            print(f"2. Familia:   {nombre_familia} ({especie_raza})")
+            print(f"3. Servicio:  {'Consulta Médica' if servicio == '1' else 'Baño y Uñas'}")
+            print(f"4. Urgencia:  {nivel_urgencia}")
+            print(f"   Precio:    ${monto_actual}")
+            print("----------------------------------------")
+            print("5. [ CONFIRMAR Y GUARDAR REGISTRO ]")
+            print("6. [ CANCELAR TODO Y VOLVER AL MENÚ ]")
+            
+            opcion_editar = input("Seleccione el número del dato a corregir o confirme (1-6): ")
+            
+            if opcion_editar == "1":
+                nombre_mascota = input("Ingrese el nombre CORRECTO: ")
+                
+            elif opcion_editar == "2":
+                print("\nNuevas Categorías: 1. Canino | 2. Felino | 3. Ave | 4. Reptil")
+                categoria = input("Seleccione la nueva categoría (1-4): ")
+                
+                if categoria == "1": nombre_familia = "Canino"
+                elif categoria == "2": nombre_familia = "Felino"
+                elif categoria == "3": nombre_familia = "Ave"
+                elif categoria == "4": nombre_familia = "Reptil"
+                else: nombre_familia = "Desconocida"
+                
+                especie_raza = input("Ingrese la nueva Especie/Raza: ")
+                
+                # 🌟 REVALIDACIÓN AL CAMBIAR DE FAMILIA EN LA EDICIÓN
+                if servicio == "2" and categoria not in ["1", "2"]:
+                    print(f"\n⚠️ CONTROL DE SEGURIDAD: Estética NO disponible para {nombre_familia}.")
+                    print("El servicio se reajustó automáticamente a '1' (Consulta Médica).")
+                    servicio = "1"
+                monto_actual = calcular_costo_atencion(servicio, nivel_urgencia) # Recalculamos precio
+                
+            elif opcion_editar == "3":
+                print("\nNuevos Servicios: 1. Consulta Médica | 2. Baño y Corte de Uñas")
+                nuevo_servicio = input("Seleccione el nuevo servicio (1-2): ")
+                
+                # 🌟 REVALIDACIÓN AL CAMBIAR DE SERVICIO EN LA EDICIÓN
+                if nuevo_servicio == "2" and categoria not in ["1", "2"]:
+                    print(f"\n❌ ERROR: Estética NO disponible para la familia {nombre_familia}. No se aplicó el cambio.")
+                else:
+                    servicio = nuevo_servicio
+                monto_actual = calcular_costo_atencion(servicio, nivel_urgencia) # Recalculamos precio
+                
+            elif opcion_editar == "4":
+                nivel_urgencia = input("Ingrese la nueva urgencia (Alta/Media/Baja): ").capitalize()
+                monto_actual = calcular_costo_atencion(servicio, nivel_urgencia) # Recalculamos precio
+                
+            elif opcion_editar == "5":
+                print("\n💾 Confirmando y guardando en el sistema...")
+                datos_correctos = True # Apaga el bucle de edición y permite avanzar a guardar
+                
+            elif opcion_editar == "6":
+                print("\n🔄 Registro descartado por completo.")
+                break # Rompe el bucle de edición
+                
+        # Si la salida del bucle de edición fue por la opción 6 (cancelar todo)
+        if opcion_editar == "6":
+            continue # Salta el guardado de abajo y regresa directo al menú principal
+            
+        # =============================================================
+        # 💾 REGISTRO DEFINITIVO (Solo se ejecuta si se presionó la opción 5)
+        # =============================================================
+        
+        # Impactamos los contadores específicos según la familia final confirmada
+        if categoria == "1": cant_caninos += 1
+        elif categoria == "2": cant_felinos += 1
+        elif categoria == "3": cant_aves += 1
+        elif categoria == "4": cant_reptiles += 1
+            
+        # Impactamos los totales generales de la caja
+        total_recaudado += monto_actual
+        total_atenciones += 1
+        
+        # Evaluamos el control del Máximo del día
+        if monto_actual > max_gasto:
+            max_gasto = monto_actual
+            max_nombre_mascota = nombre_mascota
+            max_familia_mascota = nombre_familia
+            
+        print(f"\n¡Atención de {nombre_mascota} guardada con éxito!")
+        
+    elif opcion == "2":
+        # --- REPORTE FINAL / ESTADÍSTICAS ---
+        print("\n========================================")
+        print("   REPORTE ESTADÍSTICO DE LA JORNADA   ")
+        print("========================================")
+        print(f"Monto total recaudado en caja: ${total_recaudado}")
+        print(f"Cantidad total de atenciones realizadas: {total_atenciones}")
+        print("----------------------------------------")
+        
+        # Evitar división por cero
+        if total_atenciones > 0:
+            porc_caninos = (cant_caninos / total_atenciones) * 100
+            porc_felinos = (cant_felinos / total_atenciones) * 100
+            porc_aves = (cant_aves / total_atenciones) * 100
+            porc_reptiles = (cant_reptiles / total_atenciones) * 100
+            
+            promedio_ticket = total_recaudado / total_atenciones
+            
+            print("Frecuencia por Familias Atendidas:")
+            print(f"- Caninos:  {cant_caninos} ({porc_caninos:.2f}%)")
+            print(f"- Felinos:  {cant_felinos} ({porc_felinos:.2f}%)")
+            print(f"- Aves:     {cant_aves} ({porc_aves:.2f}%)")
+            print(f"- Reptiles: {cant_reptiles} ({porc_reptiles:.2f}%)")
+            print("----------------------------------------")
+            print(f"Gasto promedio por consulta: ${promedio_ticket:.2f}")
+            print(f"Récord de mayor facturación: {max_nombre_mascota} ({max_familia_mascota}) con un total de ${max_gasto}")
+        else:
+            print("Aún no se registraron atenciones en el sistema.")
+        print("========================================")
+        
+    elif opcion == "3":
+        print("\nCerrando el sistema de la veterinaria. ¡Hasta mañana!")
+    else:
+        print("\n⚠️ Opción no válida. Por favor, seleccione 1, 2 o 3.")
