@@ -1,5 +1,6 @@
 import csv
-    
+from datetime import datetime
+
 def cargar_saludo():
     print("====================================")
     print("Bienvenido al sistema de veterinaria")
@@ -14,6 +15,11 @@ def mostrar_menu():
     print("Otro número para salir")
     opcion = input("ingrese una opcion: ")
     return opcion
+
+def mostrar_cabecera():
+    print("------------------------------------")
+    print("ID |   NOMBRE   | ESPECIE | EDAD")
+    print("------------------------------------")
 
 def leer_csv():
     with open("animales.csv", "r", encoding="utf-8") as archivo:
@@ -33,10 +39,38 @@ def leer_csv():
 
             print(f"{id_animal}  | {nombre} | {especie} | {edad}")
 
-def mostrar_cabecera():
-    print("------------------------------------")
-    print("ID |   NOMBRE   | ESPECIE | EDAD")
-    print("------------------------------------")
+
+def obtener_ultimo_id():
+    try:
+        with open("animales.csv", "r", encoding="utf-8") as archivo:
+            lector = csv.DictReader(archivo)
+            lista_de_ids = [] 
+            # 2. Recorremos el archivo fila por fila de forma tradicional
+            for fila in lector:
+                # Convertimos el ID de texto a número entero
+                id_numero = int(fila['id'])
+                # Lo agregamos a nuestra lista
+                lista_de_ids.append(id_numero)
+            # 3. Si la lista tiene elementos, buscamos el mayor. Si está vacía, devolvemos 0.
+            if lista_de_ids:
+                return max(lista_de_ids)
+            else:
+                return 0
+    except FileNotFoundError: # Comprobación de error en caso de que el archivo no exista
+        return 0
+
+
+def cargar_animales():
+    id_animal = str(obtener_ultimo_id() + 1)
+    nombre = input("Ingrese el nombre del animal: ")
+    especie = input("Ingrese la especie del animal: ")
+    edad = input("Ingrese la edad del animal: ")
+    ultima_atencion = datetime.now()
+
+    with open("animales.csv", "a", encoding="utf-8", newline='') as archivo:
+        escritor = csv.writer(archivo)
+        escritor.writerow([id_animal, nombre, especie, edad, ultima_atencion])
+    print("Animal cargado exitosamente.")
 
 
 cargar_saludo()
@@ -44,7 +78,7 @@ opcion = mostrar_menu()
 
 while opcion == "1" or opcion == "2" or opcion == "3":
     if opcion == "1":
-        print("has elegido la opcion 1")
+        cargar_animales()
     elif opcion == "2":
         mostrar_cabecera()
         leer_csv()

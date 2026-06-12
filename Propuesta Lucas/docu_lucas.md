@@ -21,6 +21,10 @@
 ### rjust(numero)
 - Deja el texto a la derecha y rellena el espacio sobrante con " "
 
+### datetime.now()
+- Se necesita importar from datetime import datetime
+- Obtiene la fecha y la hora actual
+
 
 ## Importante
 En mi solucion propuesta, damos por hecho que existe un archivo
