@@ -1,19 +1,34 @@
 import csv
 from datetime import datetime
 
-def cargar_saludo():
+def mostrar_saludo():
     print("====================================")
     print("Bienvenido al sistema de veterinaria")
     print("====================================")
-
-
-def mostrar_menu():
     print("\nMenú Principal")
-    print("1. Cargar nuevo animal")
+
+
+def menu_inicio():
+    print("1. Atender una Mascota")
+    print("2. Resumen estadistico")
+    print("Otro número para salir")
+    opcion = input("Ingrese una opcion: ")
+    return opcion
+
+
+
+def mostrar_mensaje_atenciones():
+    print("\n==========================================")
+    print("ATENCION DE MASCOTAS")
+    print("==========================================")
+
+
+def menu_atencion():
+    print("\n1. Cargar nuevo animal")
     print("2. Ver lista de animales")
     print("3. Resumen estadistico")
     print("Otro número para salir")
-    opcion = input("ingrese una opcion: ")
+    opcion = input("Ingrese una opcion: ")
     return opcion
 
 def mostrar_cabecera():
@@ -58,12 +73,32 @@ def obtener_ultimo_id():
                 return 0
     except FileNotFoundError: # Comprobación de error en caso de que el archivo no exista
         return 0
+    
+
+def elegir_especie():
+    print("Especies disponibles:")
+    print("1. Perro")
+    print("2. Gato")
+    print("3. Pájaro")
+    print("4. Reptil")
+    print("5. Otro")
+    opcion = input("Seleccione una especie: ")
+    if opcion == "1":
+        return "Perro"
+    elif opcion == "2":
+        return "Gato"
+    elif opcion == "3":
+        return "Pájaro"
+    elif opcion == "4":
+        return "Reptil"
+    else:
+        return "Otro"
 
 
 def cargar_animales():
     id_animal = str(obtener_ultimo_id() + 1)
     nombre = input("Ingrese el nombre del animal: ")
-    especie = input("Ingrese la especie del animal: ")
+    especie = elegir_especie()
     edad = input("Ingrese la edad del animal: ")
     ultima_atencion = datetime.now()
 
@@ -73,20 +108,32 @@ def cargar_animales():
     print("Animal cargado exitosamente.")
 
 
-cargar_saludo()
-opcion = mostrar_menu()
+mostrar_saludo()
+opcion = menu_inicio()
 
-while opcion == "1" or opcion == "2" or opcion == "3":
+while opcion == "1" or opcion == "2":
     if opcion == "1":
-        cargar_animales()
+        mostrar_mensaje_atenciones()
+        opcion2 = menu_atencion()
+        while opcion2 == "1" or opcion2 == "2" or opcion2 == "3":
+            if opcion2 == "1":
+                cargar_animales()
+            elif opcion2 == "2":
+                mostrar_cabecera()
+                leer_csv()
+                opcionMascota = input("Seleccione una mascota: ")
+            elif opcion2 == "3":
+                print("Has elegido la opcion2 3")
+            else:
+                print("opcion2 no valida")
+                break
+            opcion2 = menu_atencion()
     elif opcion == "2":
-        mostrar_cabecera()
-        leer_csv()
-    elif opcion == "3":
-        print("has elegido la opcion 3")
+        print("Has elegido la opcion 2")
     else:
-        print("opcion no valida")
+        print("Opcion no valida")
         break
-    opcion = mostrar_menu()
+    opcion = menu_inicio()
 
-print("gracias por usar el sistema")
+
+print("Gracias por usar el sistema")
