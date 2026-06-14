@@ -106,6 +106,51 @@ def cargar_animales():
         escritor = csv.writer(archivo)
         escritor.writerow([id_animal, nombre, especie, edad, ultima_atencion])
     print("Animal cargado exitosamente.")
+    atender_mascota(
+        id=id_animal, 
+        nombre=nombre, 
+        especie=especie, 
+        edad=edad)
+    
+def tipo_atencion():
+    print("Tipos de atención:")
+    print("1. Atención médica")
+    print("2. SPA")
+    opcion_atencion = input("Seleccione el tipo de atención: ")
+    return opcion_atencion
+    
+    
+def atender_mascota(id, nombre, especie, edad):
+    if especie == 'Perro':
+        print("Atendiendo a un perro llamado", nombre)
+        contador_perros = contador_perros + 1
+        print("Desea una atención medica o atención de SPA?")
+        print("Si es atención medica presione 1, si es SPA 2")
+        
+    elif especie == 'Gato':
+        print("Atendiendo a un gato llamado", nombre)
+        contador_gatos = contador_gatos + 1
+        
+    elif especie == 'Pájaro':
+        print("Atendiendo a un pájaro llamado", nombre)
+        contador_pajaros = contador_pajaros + 1
+        
+    elif especie == 'Reptil':
+        print("Atendiendo a un reptil llamado", nombre)
+        contador_reptil = contador_reptil +1
+        
+    else:
+        print("Atendiendo a una mascota de especie desconocida llamada", nombre)
+        contador_otros = contador_otros + 1
+        
+
+def traer_mascota_del_csv(id):
+    with open("animales.csv", "r", encoding="utf-8") as archivo:
+        lector = csv.DictReader(archivo)
+        for fila in lector:
+            if fila['id'] == id:
+                return fila
+    return None
 
 
 mostrar_saludo()
@@ -118,16 +163,29 @@ while opcion == "1" or opcion == "2":
         while opcion2 == "1" or opcion2 == "2" or opcion2 == "3":
             if opcion2 == "1":
                 cargar_animales()
+                
             elif opcion2 == "2":
                 mostrar_cabecera()
                 leer_csv()
                 opcionMascota = input("Seleccione una mascota: ")
+                mascota = traer_mascota_del_csv(opcionMascota)
+                atender_mascota(
+                    id=opcionMascota, 
+                    nombre=mascota["nombre"], 
+                    especie=mascota["especie"], 
+                    edad=mascota["edad"])
+                
+                
             elif opcion2 == "3":
                 print("Has elegido la opcion2 3")
             else:
                 print("opcion2 no valida")
                 break
             opcion2 = menu_atencion()
+            
+            
+            
+            
     elif opcion == "2":
         print("Has elegido la opcion 2")
     else:
