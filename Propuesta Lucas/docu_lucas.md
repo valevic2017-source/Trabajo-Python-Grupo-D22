@@ -31,6 +31,7 @@ En mi solucion propuesta, damos por hecho que existe un archivo
 animales.csv con al menos la cabecera.
 Esto se hace así para evitar confusiones con la escritura del archivo, si se desea crear el script sin el archivo de cabecera, se deberá incluir la librería os y verificar si existe antes
 Esto agregaría una complejidad innecesaria para una situación como esta.
+
 ```
 import csv
 import os  # <-- Importamos esto para verificar si el archivo existe
@@ -59,3 +60,11 @@ def cargar_animales():
         
     print("Animal cargado exitosamente.")
 ```
+
+# Uso de Inteligencia Artificial en el proyecto
+
+## Manejo de errores
+La propuesta consiste en modularizar el código en funciones para identificar donde se originan los fallos.
+Ante un error, se consultará a la IA proporcionando el mensaje de error como la función afectada.
+Se especifica en el prompt que la IA proporcione una guía teórica en lugar de generar el código corregido de forma automática. De este modo se promueve la comprensión de la lógica y sintaxis del lenguaje, evitando la práctica del "copiar y pegar"
+
