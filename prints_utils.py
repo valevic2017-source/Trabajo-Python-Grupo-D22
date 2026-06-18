@@ -3,10 +3,10 @@ def mostrar_saludo():
     print("====================================")
     print("Bienvenido al sistema de veterinaria")
     print("====================================")
-    print("\nMenú Principal")
 
     
 def menu_inicio():
+    print("\nMenú Principal")
     print("1. Atender una Mascota")
     print("2. Resumen estadistico")
     print("Otro número para salir")
@@ -78,14 +78,6 @@ def atender_mascota_print(id, nombre, especie, edad):
 
 
 
-def tipo_atencion():
-    print("Tipos de atención:")
-    print("1. Atención médica")
-    print("2. SPA")
-    opcion_atencion = input("Seleccione el tipo de atención: ")
-    return opcion_atencion
-
-
 def elegir_atenciones():
     print("\nAtenciones disponibles:")
     print("1. Vacunación")
@@ -154,4 +146,38 @@ def mensaje_confirmacion(nombre, especie, edad, atencion, precio):
     print(f"Se atendió a {nombre} un {especie} de {edad} años.")
     print(f"Se le realizó el procedimiento de {atencion} con un costo de ${precio}.")
     print("\n==========================================")
+
+
+def confirmar_datos(nombre, especie, edad):
+        print("\n------------------------------------")
+        print("¿Confirmas los datos del nuevo animal?")
+        print(f"Nombre:  {nombre}")
+        print(f"Especie: {especie}")
+        print(f"Edad:    {edad} años")
+        print("------------------------------------")
+
+
+def mostrar_resumen_estadistico(
+    total_atenciones, 
+    total_perros, 
+    total_gatos, 
+    total_pajaros, 
+    total_reptiles, 
+    total_otros, 
+    recaudacion_total):
     
+        print("\n==========================================")
+        print("          RESUMEN ESTADÍSTICO             ")
+        print("==========================================")
+        print(f"Total de atenciones realizadas: {total_atenciones}")
+        print("------------------------------------------")
+        print(f" Atenciones a Perros:  {total_perros}")
+        print(f" Atenciones a Gatos:   {total_gatos}")
+        print(f" Atenciones a Pájaros: {total_pajaros}")
+        print(f" Atenciones a Reptiles:{total_reptiles}")
+        print(f" Atenciones a Otros:   {total_otros}")
+        print("==========================================")
+
+        print(f"Recaudación total: ${recaudacion_total}")
+        
+        
