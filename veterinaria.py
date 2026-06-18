@@ -8,7 +8,11 @@ from prints_utils import (
     menu_atencion,
     mostrar_cabecera,
     elegir_especie,
-    atender_mascota_print
+    atender_mascota_print,
+    tipo_atencion,
+    elegir_atenciones,
+    calcular_precios,
+    mensaje_confirmacion
 )
 
 from csv_utils import (
@@ -16,13 +20,12 @@ from csv_utils import (
     obtener_ultimo_id,
     traer_mascota_del_csv
 )
-    
 
 
 
 
 def cargar_animales_csv():
-    id_animal = str(obtener_ultimo_id() + 1)
+    id_animal = str(obtener_ultimo_id("animales") + 1)
     nombre = input("Ingrese el nombre del animal: ")
     especie = elegir_especie()
     edad = input("Ingrese la edad del animal: ")
@@ -32,43 +35,21 @@ def cargar_animales_csv():
         escritor = csv.writer(archivo)
         escritor.writerow([id_animal, nombre, especie, edad, ultima_atencion])
     print("Animal cargado exitosamente.")
-    atender_mascota(
-        id=id_animal, 
-        nombre=nombre, 
-        especie=especie, 
-        edad=edad)
     
-def tipo_atencion():
-    print("Tipos de atención:")
-    print("1. Atención médica")
-    print("2. SPA")
-    opcion_atencion = input("Seleccione el tipo de atención: ")
-    return opcion_atencion
+    return id_animal, nombre, especie, edad
 
 
+def cargar_atencion_csv(id_mascota):
+    id_atencion = str(obtener_ultimo_id("atenciones") + 1)
+    id_mascota = id_mascota
+    atencion = elegir_atenciones()
+    precio = calcular_precios(atencion)
 
-def cargar_animales(id_animal, nombre, especie, edad):
-    contador_perros = 0
-    contador_gatos = 0
-    contador_pajaros = 0
-    contador_reptil = 0
-    contador_otros = 0
-
-    
-    esp_atendida = atender_mascota(id_animal, nombre, especie, edad)
-    
-    if esp_atendida == 'Perro':
-        contador_perros += 1
-    elif esp_atendida == 'Gato':
-        contador_gatos += 1
-    elif esp_atendida == 'Pájaro':
-        contador_pajaros += 1
-    elif esp_atendida == 'Reptil':
-        contador_reptil += 1
-    else:
-        contador_otros += 1
-    
-
+    with open("atenciones.csv", "a", encoding="utf-8", newline='') as archivo:
+        escritor = csv.writer(archivo)
+        escritor.writerow([id_atencion, id_mascota, atencion, precio])
+        
+    return atencion, precio
 
 
 
@@ -84,20 +65,19 @@ def main():
             
             while opcion2 == "1" or opcion2 == "2" or opcion2 == "3":
                 if opcion2 == "1":
-                    cargar_animales_csv()
+                    id_mascota, nombre_m, especie_m, edad_m = cargar_animales_csv()
+                    atencion, precio = cargar_atencion_csv(id_mascota)
+                    mensaje_confirmacion(nombre_m, especie_m, edad_m, atencion, precio)
+                    
                     
                 elif opcion2 == "2":
                     mostrar_cabecera()
                     leer_csv()
                     opcionMascota = input("Seleccione una mascota: ")
                     mascota = traer_mascota_del_csv(opcionMascota)
+                    atencion, precio = cargar_atencion_csv(mascota["id"])
+                    mensaje_confirmacion(mascota["nombre"], mascota["especie"], mascota["edad"], atencion, precio)
                     
-                    cargar_animales(
-                        opcionMascota, 
-                        mascota["nombre"], 
-                        mascota["especie"], 
-                        mascota["edad"]
-                    )
                     
                 elif opcion2 == "3":
                     print("Has elegido la opcion2 3")

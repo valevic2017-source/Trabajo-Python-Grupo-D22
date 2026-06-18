@@ -21,9 +21,9 @@ def leer_csv():
             print(f"{id_animal}  | {nombre} | {especie} | {edad}")
 
 
-def obtener_ultimo_id():
+def obtener_ultimo_id(nombre_archivo):
     try:
-        with open("animales.csv", "r", encoding="utf-8") as archivo:
+        with open(f"{nombre_archivo}.csv", "r", encoding="utf-8") as archivo:
             lector = csv.DictReader(archivo)
             lista_de_ids = [] 
             # 2. Recorremos el archivo fila por fila de forma tradicional
@@ -48,3 +48,5 @@ def traer_mascota_del_csv(id):
             if fila['id'] == id:
                 return fila
     return None
+
+
