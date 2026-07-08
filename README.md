@@ -6,7 +6,7 @@ Algoritmos y Estructuras de Datos - ISI - Ciclo 2026
 ## Integrantes del grupo
 
 - Vicentin Valentina
-- Luka Patricio
+- Cabral Viola Luka
 - Sanabria Lucas
 
 ## Comisión 1.4 D
