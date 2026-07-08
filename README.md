@@ -149,6 +149,7 @@ def cargar_animales():
    - Cualquier otra opción: salir del programa.
 
 ## Uso de Inteligencia Artificial en el proyecto
+Se utilizó mayoritariamente la IA de Gemini 3.5 Flash
 
 ### Manejo de errores
 
