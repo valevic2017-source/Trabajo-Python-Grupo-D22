@@ -93,7 +93,6 @@ def cargar_animales_csv():
         edad = input("Ingrese la edad del animal: ")
         confirmar_datos(nombre, especie, edad) 
 
-        
         confirmacion = input("¿Guardar cambios? (S/N): ").strip().upper()
 
         if confirmacion == "S":
