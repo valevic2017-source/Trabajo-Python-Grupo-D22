@@ -9,9 +9,7 @@ Algoritmos y Estructuras de Datos - ISI - Ciclo 2026
 - Luka Patricio
 - Sanabria Lucas
 
-## Comisión
-
-[Completar con el número/nombre de comisión]
+## Comisión 1.4 D
 
 ## Descripción general del sistema
 
